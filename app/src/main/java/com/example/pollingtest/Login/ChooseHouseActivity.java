@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +47,12 @@ public class ChooseHouseActivity extends AppCompatActivity {
 //    private FirebaseUser newUser;
     private String uId;
     private LocalDate today;
+
+    ArrayList<String> homes = new ArrayList<>();
+
+    public interface FirebaseCallBack{
+        void onCallBack(ArrayList<String> homesIDs);
+    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -118,6 +125,14 @@ public class ChooseHouseActivity extends AppCompatActivity {
         dialog.show();
         System.out.println("<><><><>> 4 dialogBox().dialogShow()");
 
+        //https://www.youtube.com/watch?v=OvDZVV5CbQg
+        getData(new FirebaseCallBack() {//Wait for the async database then grab all the homes and store them in an array list called "homes".
+            @Override
+            public void onCallBack(ArrayList<String> homesIDs) {
+                homes = homesIDs;
+            }
+        });
+
         //Creates an onClickLister to listen for when the submitBtn is clicked
         joinHBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,8 +150,17 @@ public class ChooseHouseActivity extends AppCompatActivity {
                     return;
                 }
 
-                getData();
 
+                for(String home:homes){//loop through all the homes
+                    if (homeIDInput.equals(home)){//if the home input matches with one of the home String in the array
+                        newReference.child("NewUsers").child(uId).child("home").setValue(home);
+                        newReference.child("Homes").child(home).child("tenants").child(uId).child("joinDate").setValue(today.toString());
+                        finish();//end the current activity.
+                        startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "House doesn't exist", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
                 //The input dialog box is dismissed
                 dialog.dismiss();
@@ -144,27 +168,15 @@ public class ChooseHouseActivity extends AppCompatActivity {
         });
     }
 
-    private void getData(){
-        System.out.println("<><><><>> 6");
+    private void getData(final FirebaseCallBack firebaseCallBack){
         newReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("<><><><>> 7 ><><><><><><><><><><><><><><><><><>");
                 //Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
                 for(DataSnapshot getHomesID: snapshot.child("Homes").getChildren()) {
-                    System.out.println("<><><><>> 7 for loop");
-                    if (homeIDInput.equals(getHomesID.getKey())){
-                        System.out.println("<><><><>> 7 if statement");
-                        newReference.child("NewUsers").child(uId).child("home").setValue(getHomesID.getKey());
-                        System.out.println("<><><><>> 7 if statement > set home to the user");
-                        newReference.child("Homes").child(getHomesID.getKey()).child("tenants").child(uId).child("joinDate").setValue(today.toString());
-                        System.out.println("<><><><>> 7 if statement > set user to the home");
-                        finish();//end the current activity.
-                        startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
-                    } else {
-                        Toast.makeText(getApplicationContext(), "House doesn't exist", Toast.LENGTH_SHORT).show();
-                    }
-
+                    ArrayList<String> homeIDs = new ArrayList<>();
+                    homeIDs.add(getHomesID.getKey());
+                    firebaseCallBack.onCallBack(homeIDs);
                 }
             }
 
@@ -175,7 +187,6 @@ public class ChooseHouseActivity extends AppCompatActivity {
                 // Toast.makeText(MainActivity.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
             }
         });
-        System.out.println("<><><><>> 8");
     }
 
 

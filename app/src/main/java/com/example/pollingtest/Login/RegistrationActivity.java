@@ -140,7 +140,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), ChooseHouseActivity.class);//TODO:Change application context to the login one
                             intent.putExtra("uId", uId);
                             startActivity(intent);
-
+                            System.out.println(">>>> intent was called");
                             finish();//will end the current activity allowing the user to go back
 
                         }else {
