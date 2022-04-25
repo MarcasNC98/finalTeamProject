@@ -1,6 +1,7 @@
 package com.example.pollingtest.Login;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ChooseHouseActivity extends AppCompatActivity {
@@ -41,9 +44,10 @@ public class ChooseHouseActivity extends AppCompatActivity {
     private FirebaseAuth newAuth;
     private FirebaseUser newUser;
     private String uId;
+    private LocalDate today;
 
 
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +64,17 @@ public class ChooseHouseActivity extends AppCompatActivity {
         newUser = newAuth.getCurrentUser();//Creates a FirebaseUser class called newUser and ties it to newAuth.getCurrentUser that will retrieve the current users credentials
         uId = newUser.getUid();
 
+        today = LocalDate.now();
+
         createButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             //When clicked, the dialogBox view will be shown
             public void onClick(View view) {
                 System.out.println("<><><><>> 2 CreateBtn.OnClick()");
                 houseID = newReference.push().getKey();
-                newReference.child("Homes").child(houseID).child("blank").setValue("");
+                newReference.child("Homes").child(houseID).child("check").setValue(today.toString());
+                newReference.child("Homes").child(houseID).child("tenants").child(uId).child("joinDate").setValue(today.toString());
                 newReference.child("NewUsers").child(uId).child("home").setValue(houseID);
 
                 startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
@@ -146,8 +154,9 @@ public class ChooseHouseActivity extends AppCompatActivity {
                 for(DataSnapshot getHomesID: snapshot.child("Homes").getChildren()) {
                     if (homeIDInput.equals(getHomesID.getKey())){
                         newReference.child("NewUsers").child(uId).child("home").setValue(getHomesID.getKey());
-                        startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
+                        newReference.child("Homes").child(getHomesID.getKey()).child("tenants").child(uId).child("joinDate").setValue(today.toString());
                         finish();//end the current activity.
+                        startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
                     } else {
                         Toast.makeText(getApplicationContext(), "House doesn't exist", Toast.LENGTH_SHORT).show();
                     }
