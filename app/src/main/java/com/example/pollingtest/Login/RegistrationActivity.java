@@ -1,6 +1,7 @@
 package com.example.pollingtest.Login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -39,6 +40,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private FirebaseDatabase newDatabase;
     private DatabaseReference newReference;
+
+    private Context mContext;
 
     private EditText userName;
 
@@ -134,7 +137,10 @@ public class RegistrationActivity extends AppCompatActivity {
                             //A toast dialog message will pop up on the screen informing the user that their account has been created successfully
                             Toast.makeText(getApplicationContext(),"Account created",Toast.LENGTH_SHORT).show();
 
-                            startActivity(new Intent(getApplicationContext(), ChooseHouseActivity.class));
+                            Intent intent = new Intent(getApplicationContext(), ChooseHouseActivity.class);//TODO:Change application context to the login one
+                            intent.putExtra("uId", uId);
+                            startActivity(intent);
+
                             finish();//will end the current activity allowing the user to go back
 
                         }else {

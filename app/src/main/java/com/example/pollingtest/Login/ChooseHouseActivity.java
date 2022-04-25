@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class ChooseHouseActivity extends AppCompatActivity {
 
@@ -41,8 +42,8 @@ public class ChooseHouseActivity extends AppCompatActivity {
     private DatabaseReference newReference;
     private String homeIDInput;
     private String houseID;
-    private FirebaseAuth newAuth;
-    private FirebaseUser newUser;
+//    private FirebaseAuth newAuth;
+//    private FirebaseUser newUser;
     private String uId;
     private LocalDate today;
 
@@ -60,9 +61,9 @@ public class ChooseHouseActivity extends AppCompatActivity {
         newDatabase = FirebaseDatabase.getInstance("https://polling-3351e-default-rtdb.europe-west1.firebasedatabase.app/");
         newReference = newDatabase.getReference();
 
-        newAuth = FirebaseAuth.getInstance();//Returns an instance of FirebaseAuth and ties it to newAuth
-        newUser = newAuth.getCurrentUser();//Creates a FirebaseUser class called newUser and ties it to newAuth.getCurrentUser that will retrieve the current users credentials
-        uId = newUser.getUid();
+//        newAuth = FirebaseAuth.getInstance();//Returns an instance of FirebaseAuth and ties it to newAuth
+//        newUser = newAuth.getCurrentUser();//Creates a FirebaseUser class called newUser and ties it to newAuth.getCurrentUser that will retrieve the current users credentials
+        uId = getIntent().getStringExtra("uId");//Gets the string passed through the intent.
 
         today = LocalDate.now();
 
@@ -148,13 +149,16 @@ public class ChooseHouseActivity extends AppCompatActivity {
         newReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("<><><><>> 7");
-                System.out.println(">>>> OnDataSnapshot getData()");
+                System.out.println("<><><><>> 7 ><><><><><><><><><><><><><><><><><>");
                 //Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
                 for(DataSnapshot getHomesID: snapshot.child("Homes").getChildren()) {
+                    System.out.println("<><><><>> 7 for loop");
                     if (homeIDInput.equals(getHomesID.getKey())){
+                        System.out.println("<><><><>> 7 if statement");
                         newReference.child("NewUsers").child(uId).child("home").setValue(getHomesID.getKey());
+                        System.out.println("<><><><>> 7 if statement > set home to the user");
                         newReference.child("Homes").child(getHomesID.getKey()).child("tenants").child(uId).child("joinDate").setValue(today.toString());
+                        System.out.println("<><><><>> 7 if statement > set user to the home");
                         finish();//end the current activity.
                         startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
                     } else {
