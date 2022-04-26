@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddChoreActivity">
+    tools:context=".chores.AddChoreActivity"
+    android:background="@color/black_shade_1">
 
     <TextView
         android:id="@+id/textView"
@@ -14,6 +15,7 @@
         android:text="Add a chore"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,6 +29,8 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="Chore Name"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,6 +46,7 @@
         android:fontFamily="sans-serif-light"
         android:text="When to have it done by?"
         android:textSize="20sp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +60,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:minHeight="48dp"
+        android:background="@color/black_shade_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

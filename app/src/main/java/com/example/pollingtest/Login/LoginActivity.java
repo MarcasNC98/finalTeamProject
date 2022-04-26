@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                         //If the task is successful, a new activity is started that will get the HomePage class and redirect the user to the apps home page
                         if (task.isSuccessful()) {
                             startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
+                            finish();
                             //A toast dialog message will pop up on the screen informing the user that they have been logged in successfully
                             Toast.makeText(getApplicationContext(), "Logged In", Toast.LENGTH_SHORT).show();
 

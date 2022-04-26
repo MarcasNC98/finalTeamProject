@@ -19,8 +19,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pollingtest.GroceryList.GroceryActivity;
 import com.example.pollingtest.Login.LoginActivity;
 import com.example.pollingtest.R;
+import com.example.pollingtest.chores.MainChoresActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,6 +52,7 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
     private ArrayList<PollRVModal> pollRVModalArrayList;
     private PollRVAdapter pollRVAdapter;
     private RelativeLayout homeRL;
+    private Button grocery,chores,polls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,9 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
         addPollFAB = findViewById(R.id.idFABAddPoll);
         firebaseDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        grocery = (Button) findViewById(R.id.polls_grocery_btn);
+        chores = (Button) findViewById(R.id.polls_chores_btn);
+        polls = (Button) findViewById(R.id.polls_polls_btn);
         FirebaseUser newUser=mAuth.getCurrentUser();
 
         //Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
@@ -117,6 +123,22 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        grocery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PollActivity.this, GroceryActivity.class));
+                finish();
+            }
+        });
+
+        chores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PollActivity.this, MainChoresActivity.class));
+                finish();
             }
         });
 
@@ -221,6 +243,7 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
         // file for displaying our menu options.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+
     }
 
     private void displayBottomSheet(PollRVModal modal) {
@@ -272,5 +295,7 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
                 startActivity(x);
             }
         });
+
+
     }
 }

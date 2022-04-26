@@ -25,6 +25,12 @@
             android:name=".chores.MainChoresActivity"
             android:exported="false" />
         <activity
+            android:name=".chores.AddChoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chores.UpdateChoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".Login.RegistrationActivity"
             android:exported="false" />
         <activity

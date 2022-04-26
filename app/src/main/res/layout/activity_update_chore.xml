@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddChoreActivity">
+    tools:context=".chores.UpdateChoreActivity"
+    android:background="@color/black_shade_1">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
+        android:textColor="@color/white"
         android:text="Update chore"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -24,6 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="Chore Name"
@@ -38,6 +42,7 @@
         android:id="@+id/priorityTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:layout_marginTop="32dp"
         android:fontFamily="sans-serif-light"
         android:text="When to have it done by?"
@@ -52,6 +57,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:background="@color/black_shade_4"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:minHeight="48dp"

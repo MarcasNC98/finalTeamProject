@@ -63,7 +63,7 @@ public class GroceryActivity extends AppCompatActivity {
         adapter = new NewAdapter(this, list);
         recyclerView.setAdapter(adapter);
 
-        choresBtn= findViewById(R.id.choresShift);
+        choresBtn= findViewById(R.id.grocery_chores_btn);
 
         //Returns an instance of FirebaseAuth and ties it to newAuth
         newAuth=FirebaseAuth.getInstance();
@@ -84,7 +84,7 @@ public class GroceryActivity extends AppCompatActivity {
 
         //Assigns the Floating Action Button with the id of 'fab' from 'grocerylistapp.xml to fab_btn
         fab_btn=findViewById(R.id.fab);
-        pollBtn=findViewById(R.id.pollBtn);
+        pollBtn=findViewById(R.id.grocery_polls_btn);
             getData();
             newReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -121,12 +121,14 @@ public class GroceryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), PollActivity.class));
+                finish();
             }
         });
         choresBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), MainChoresActivity.class));
+                finish();
             }
         });
     }

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainChoresActivity">
+    tools:context=".chores.MainChoresActivity"
+    android:background="@color/black_shade_1">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addChoresFAB"
@@ -26,7 +27,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:contentDescription="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/chores_polls_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
@@ -48,6 +49,7 @@
         android:text="This household has no chores"
         android:textSize="24sp"
         android:visibility="gone"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -62,10 +64,42 @@
         android:layout_marginBottom="36dp"
         android:fontFamily="sans-serif"
         android:text="Add chores here -->"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/chores_chores_btn"
         app:layout_constraintEnd_toStartOf="@+id/addChoresFAB" />
+
+    <Button
+        android:id="@+id/chores_polls_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Polls"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/chores_chores_btn" />
+
+    <Button
+        android:id="@+id/chores_grocery_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Grocery"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chores_chores_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/usersRecyclerView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/chores_chores_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Chores"
+        app:layout_constraintBottom_toBottomOf="@+id/usersRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/chores_polls_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/chores_grocery_btn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

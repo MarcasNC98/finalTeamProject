@@ -5,12 +5,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pollingtest.GroceryList.GroceryActivity;
+import com.example.pollingtest.Polls.PollActivity;
 import com.example.pollingtest.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,6 +27,7 @@ public class MainChoresActivity extends AppCompatActivity {
     private FloatingActionButton mAddChoreFAB;
     private TextView mNoChoresTV;
     private TextView mNoChoresArrowTV;
+    private Button grocery, chores, polls;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -35,6 +39,9 @@ public class MainChoresActivity extends AppCompatActivity {
         mAddChoreFAB = (FloatingActionButton) findViewById(R.id.addChoresFAB);
         mNoChoresTV = (TextView) findViewById(R.id.noChoresTV);
         mNoChoresArrowTV = (TextView) findViewById(R.id.noChoresArrowTV);
+        grocery = (Button) findViewById(R.id.chores_grocery_btn);
+        chores = (Button) findViewById(R.id.chores_chores_btn);
+        polls = (Button) findViewById(R.id.chores_polls_btn);
 
 
         FirebaseDatabaseHelper firebaseDatabase = new FirebaseDatabaseHelper();
@@ -89,6 +96,22 @@ public class MainChoresActivity extends AppCompatActivity {
             @Override
             public void DataDeleted() {
 
+            }
+        });
+
+        grocery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainChoresActivity.this, GroceryActivity.class));
+                finish();
+            }
+        });
+
+        polls.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainChoresActivity.this, PollActivity.class));
+                finish();
             }
         });
 
