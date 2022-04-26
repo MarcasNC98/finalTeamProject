@@ -143,51 +143,7 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
             }
         });
     }
-    private void getPolls() {
-        // on below line clearing our list.
-        pollRVModalArrayList.clear();
-        // on below line we are calling add child event listener method to read the data.
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                // on below line we are hiding our progress bar.
-                loadingPB.setVisibility(View.GONE);
-                // adding snapshot to our array list on below line.
-                pollRVModalArrayList.add(snapshot.getValue(PollRVModal.class));
-                // notifying our adapter that data has changed.
-                pollRVAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                // this method is called when new child is added
-                // we are notifying our adapter and loading progress bar
-                // visibility as gone.
-                loadingPB.setVisibility(View.GONE);
-                pollRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                // notifying our adapter when child is removed.
-                pollRVAdapter.notifyDataSetChanged();
-                loadingPB.setVisibility(View.GONE);
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                // notifying our adapter when child is moved.
-                pollRVAdapter.notifyDataSetChanged();
-                loadingPB.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
     @Override
     public void onPollClick(int position) {

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--Creates a linear layout so each part is stacked on top of each other-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <!--Text view that lets the user know they are in the 'add item' form-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cardview_dark_background"
+            android:text="Poll Results"
+
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:padding="5dp" />
+
+        <!--Creates another linear layout inside the 'add item' form that will house the various input fields and labels-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--Creates a relative layout so the label for item name can be on the left-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <!--Text view that houses the item name label-->
+                <TextView
+                    android:id="@+id/option1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Item name:"
+                    android:textAppearance="?android:textAppearanceMedium" />
+            </RelativeLayout>
+
+            <!--Creates a relative layout so the input field for an item is on the right hand side of the label-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <!--Editable text field for the user to input an items name-->
+                <TextView
+                    android:id="@+id/voteCount1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Item name:"
+                    android:textAppearance="?android:textAppearanceMedium" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--Creates a relative layout so the label for item name can be on the left-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <!--Text view that houses the item name label-->
+                <TextView
+                    android:id="@+id/option2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Item name:"
+                    android:textAppearance="?android:textAppearanceMedium" />
+            </RelativeLayout>
+
+            <!--Creates a relative layout so the input field for an item is on the right hand side of the label-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <!--Editable text field for the user to input an items name-->
+                <TextView
+                    android:id="@+id/voteCount2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Item name:"
+                    android:textAppearance="?android:textAppearanceMedium" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--Creates a relative layout so the label for item name can be on the left-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <!--Text view that houses the item name label-->
+                <TextView
+                    android:id="@+id/option3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Item name:"
+                    android:textAppearance="?android:textAppearanceMedium" />
+            </RelativeLayout>
+
+            <!--Creates a relative layout so the input field for an item is on the right hand side of the label-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <!--Editable text field for the user to input an items name-->
+                <TextView
+                    android:id="@+id/voteCount3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Item name:"
+                    android:textAppearance="?android:textAppearanceMedium" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_back"
+            android:layout_margin="10dp"
+            android:text="Okay"
+            android:id="@+id/bckBtn" />
+    </LinearLayout>
+</LinearLayout>
+
