@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+
 import com.example.pollingtest.chores.pq.MyPriorityQueue;
 import com.example.pollingtest.chores.pq.PQInterface;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +28,7 @@ public class FirebaseDatabaseHelper {
 
 
     public interface DataStatus{
-        void DataIsLoaded(List<User> users, String houseID);
+        void DataIsLoaded(List<User> users, String houseID, String check);
         void DataIsInserted();
         void DataUpdated();
         void DataDeleted();
@@ -49,6 +50,8 @@ public class FirebaseDatabaseHelper {
 
                 String houseID = snapshot.child("users").child(userID).child("home").getValue(String.class);//Stores the Id of the house the user is part of. It doesn't have to be an object it can also be a variable and it wil behave the same.
                 DataSnapshot tenantsSnapshot = snapshot.child("homes").child(houseID).child("tenants");//I made a variable so that I would not have to provide all the children each time.
+
+                String check = snapshot.child("homes").child(houseID).child("check").getValue(String.class);//variable that stores the date of which the last update on the priorities has been made.
 
                 for(DataSnapshot UserNode : tenantsSnapshot.getChildren()){//Loops through all the children (users) of the chores parent in the database.
                     User user = new User();
@@ -77,36 +80,7 @@ public class FirebaseDatabaseHelper {
                     }
                     user.setChoreList((ArrayList<ChoreWithID>) mPQ.getChores());//sets the list of chores with the chores that have been arranged based on their priority.
                 }
-                dataStatus.DataIsLoaded(users, houseID);
-
-                //Check the chores date and update the priorities.
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
-                LocalDate today = LocalDate.now();//Current date
-                String check = snapshot.child("homes").child(houseID).child("check").getValue(String.class);
-                LocalDate lastCheck = LocalDate.parse(check, formatter);
-
-                if(!lastCheck.isEqual(today)){//If the app has not updated the chores today
-                    mReference.child("homes").child(houseID).child("check").setValue(today.toString());//Update the check variable on the database to let the app know that it has been updated today and to not continue with this if statement.
-
-                    for(User user:users){//loop through all the users
-                        for(ChoreWithID chore: user.getChoreList()){//Get the list of chores from each user.
-                            if(chore.getPriority()<11){//Safety net. Will stop the loop from setting the priority any higher than 11.
-                                String choreDate = chore.getDate();//Gets the date of which the chore was created.
-                                LocalDate parsedChoreDate = LocalDate.parse(choreDate, formatter);//parse the String choreDate into a LocalDate variable to be compared later.
-
-                                int daysBehind = 0;//This variable is used in the while loop to check how many days ago has a chore been made.
-                                while(parsedChoreDate.isBefore(today)){//loop for each day the chore was made until it reaches today's date.
-                                    parsedChoreDate = parsedChoreDate.plusDays(1);//Add one day to the parsedChoreDate
-                                    daysBehind++;
-                                }
-                                //Priorities:  Undone=11; ASAP=10; Today=9; Tomorrow=8; Two days from now=7; 3 Days from now=6; More than 3 days=5
-                                int newPriority = chore.getPriority()+daysBehind;//Set newPriority variable that will add the previous priority a chore had with the number of days it was behind. E.g. If a chore was created yesterday with priority 9(Today), now the priority will be 10(ASAP)
-
-                                mReference.child("homes").child(houseID).child("tenants").child(user.getId()).child("chores").child(chore.getId()).child("priority").setValue(newPriority);//Assigns the new priority
-                            }
-                        }
-                    }
-                }
+                dataStatus.DataIsLoaded(users, houseID, check);
             }
 
             @Override
@@ -144,6 +118,39 @@ public class FirebaseDatabaseHelper {
                 dataStatus.DataDeleted();
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void checkPriority(List<User> users, String houseID, String check){
+        //Check the chores date and update the priorities.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
+        LocalDate today = LocalDate.now();//Current date
+        String mCheck = check;
+        LocalDate lastCheck = LocalDate.parse(check, formatter);
+
+        if(!lastCheck.isEqual(today)){//If the app has not updated the chores today
+            mReference.child("homes").child(houseID).child("check").setValue(today.toString());//Update the check variable on the database to let the app know that it has been updated today and to not continue with this if statement.
+            System.out.println(">>>>>> Today: "+today+", ast check: "+ lastCheck);
+
+            for(User user:users){//loop through all the users
+                for(ChoreWithID chore: user.getChoreList()){//Get the list of chores from each user.
+                    if(chore.getPriority()<11){//Safety net. Will stop the loop from setting the priority any higher than 11.
+                        String choreDate = chore.getDate();//Gets the date of which the chore was created.
+                        LocalDate parsedChoreDate = LocalDate.parse(choreDate, formatter);//parse the String choreDate into a LocalDate variable to be compared later.
+
+                        int daysBehind = 0;//This variable is used in the while loop to check how many days ago has a chore been made.
+                        while(parsedChoreDate.isBefore(today)){//loop for each day the chore was made until it reaches today's date.
+                            parsedChoreDate = parsedChoreDate.plusDays(1);//Add one day to the parsedChoreDate
+                            daysBehind++;
+                        }
+                        //Priorities:  Undone=11; ASAP=10; Today=9; Tomorrow=8; Two days from now=7; 3 Days from now=6; More than 3 days=5
+                        int newPriority = chore.getPriority()+daysBehind;//Set newPriority variable that will add the previous priority a chore had with the number of days it was behind. E.g. If a chore was created yesterday with priority 9(Today), now the priority will be 10(ASAP)
+
+                        mReference.child("homes").child(houseID).child("tenants").child(user.getId()).child("chores").child(chore.getId()).child("priority").setValue(newPriority);//Assigns the new priority
+                    }
+                }
+            }
+        }
     }
 
 

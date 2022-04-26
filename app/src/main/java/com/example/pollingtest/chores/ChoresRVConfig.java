@@ -61,7 +61,7 @@ public class ChoresRVConfig {
                     if(mCheckbox.isChecked()){
                         new FirebaseDatabaseHelper().deleteChore(houseID, userID, chore.getId(), new FirebaseDatabaseHelper.DataStatus() {
                             @Override
-                            public void DataIsLoaded(List<User> users, String houseID) {
+                            public void DataIsLoaded(List<User> users, String houseID, String check) {
 
                             }
 

@@ -36,11 +36,14 @@ public class MainChoresActivity extends AppCompatActivity {
         mNoChoresTV = (TextView) findViewById(R.id.noChoresTV);
         mNoChoresArrowTV = (TextView) findViewById(R.id.noChoresArrowTV);
 
-        new FirebaseDatabaseHelper().readData(new FirebaseDatabaseHelper.DataStatus() {
-            @Override
-            public void DataIsLoaded(List<User> users, String houseID) {
-                findViewById(R.id.choresProgressBar).setVisibility(View.GONE);
 
+        FirebaseDatabaseHelper firebaseDatabase = new FirebaseDatabaseHelper();
+
+        firebaseDatabase.readData(new FirebaseDatabaseHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<User> users, String houseID, String check) {
+                //Show/Hide contents based if there is data available or not
+                findViewById(R.id.choresProgressBar).setVisibility(View.GONE);
                 mNoChoresTV.setVisibility(View.VISIBLE);
                 mNoChoresArrowTV.setVisibility(View.VISIBLE);
                 mUserRV.setVisibility(View.GONE);
@@ -52,6 +55,12 @@ public class MainChoresActivity extends AppCompatActivity {
                         break;
                     }
                 }
+
+                //Check if a new day has passed
+                firebaseDatabase.checkPriority(users, houseID, check);
+
+//                System.out.println(">>>> Users: "+ users + ", houseID: "+houseID+", check: "+check);
+
                 new UsersRVConfig().setUsersConfig(mUserRV, MainChoresActivity.this, users, houseID);
 
                 mAddChoreFAB.setOnClickListener(new View.OnClickListener() {
