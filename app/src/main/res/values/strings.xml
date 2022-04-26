@@ -14,5 +14,13 @@
     <string name="grocery_text">Groceries</string>
     <string name="chores_text">Chores</string>
     <string name="poll_text">Polls</string>
+    <string-array name="prioritySpinner">
+        <item>ASAP</item>
+        <item>Today</item>
+        <item>Tomorrow</item>
+        <item>2 Days from now</item>
+        <item>3 days from now</item>
+        <item>More than 3 days</item>
+    </string-array>
 
 </resources>

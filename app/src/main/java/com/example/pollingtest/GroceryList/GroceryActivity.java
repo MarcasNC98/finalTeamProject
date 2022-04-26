@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pollingtest.Data.Info;
 import com.example.pollingtest.Polls.PollActivity;
 import com.example.pollingtest.R;
+import com.example.pollingtest.chores.MainChoresActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,7 +41,7 @@ public class GroceryActivity extends AppCompatActivity {
 
     //FloatingActionButton class called fab_btn
     private FloatingActionButton fab_btn;
-    private Button pollBtn;
+    private Button pollBtn, choresBtn;
     //DatabaseReference class called newDatabase
     private FirebaseDatabase newDatabase;
     private DatabaseReference newReference;
@@ -61,6 +62,8 @@ public class GroceryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewAdapter(this, list);
         recyclerView.setAdapter(adapter);
+
+        choresBtn= findViewById(R.id.choresShift);
 
         //Returns an instance of FirebaseAuth and ties it to newAuth
         newAuth=FirebaseAuth.getInstance();
@@ -118,6 +121,12 @@ public class GroceryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), PollActivity.class));
+            }
+        });
+        choresBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MainChoresActivity.class));
             }
         });
     }
