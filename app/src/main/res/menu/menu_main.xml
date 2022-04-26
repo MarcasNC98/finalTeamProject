@@ -5,16 +5,5 @@
         android:id="@+id/idLogOut"
         android:icon="@drawable/ic_logout"
         android:title="Log Out" />
-    <item
-        android:id="@+id/idChores"
-
-        android:title="Chores" />
-    <item
-        android:id="@+id/idGroceries"
-
-        android:title="Groceries" />
-    <item
-        android:id="@+id/idPolls"
-
-        android:title="Polls" />
+     />
 </menu>

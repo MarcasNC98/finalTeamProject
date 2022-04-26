@@ -48,7 +48,7 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
     private RecyclerView pollRV;
     private FirebaseAuth mAuth;
     private ProgressBar loadingPB;
-    private String homeID,retrieveID,userID;
+    private String homeID,userID;
     private ArrayList<PollRVModal> pollRVModalArrayList;
     private PollRVAdapter pollRVAdapter;
     private RelativeLayout homeRL;
@@ -102,21 +102,16 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 pollRVModalArrayList.clear();
-                for(DataSnapshot dataSnapshot:snapshot.child("Homes").getChildren()){
+                String userHomeID = snapshot.child("NewUsers").child(userID).child("home").getValue(String.class);
 
-                    //Info info = dataSnapshot.getValue(Info.class);
-                    //list.add(info);
-
-
-                    System.out.println("TESTpolls"+dataSnapshot.getValue());
-                    for(DataSnapshot secondSnapshot : snapshot.child("Homes").child(dataSnapshot.getKey()).child("polls").getChildren()){
+                    for(DataSnapshot secondSnapshot : snapshot.child("Homes").child(userHomeID).child("polls").getChildren()){
                         System.out.println("TEST111111111111111"+secondSnapshot.getValue());
                         PollRVModal PollRVModal = secondSnapshot.getValue(PollRVModal.class);
                         pollRVModalArrayList.add(PollRVModal);
                         loadingPB.setVisibility(View.GONE);
 
                     }
-                }
+
                 pollRVAdapter.notifyDataSetChanged();
             }
 
@@ -152,9 +147,8 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
 
                 homeID = snapshot.child("NewUsers").child(userID).child("home").getValue(String.class);
 
-                // after getting the value we are setting
-                // our value to our text view in below line.
-                retrieveID=homeID;
+
+
             }
 
             @Override

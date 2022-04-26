@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.pollingtest.Data.Info;
+import com.example.pollingtest.Login.LoginActivity;
 import com.example.pollingtest.Polls.PollActivity;
 import com.example.pollingtest.R;
 import com.example.pollingtest.chores.MainChoresActivity;
@@ -90,18 +93,15 @@ public class GroceryActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list.clear();
-                    for(DataSnapshot dataSnapshot:snapshot.child("Homes").getChildren()){
+                    String userHomeID = snapshot.child("NewUsers").child(userID).child("home").getValue(String.class);
+                    for (DataSnapshot secondSnapshot : snapshot.child("Homes").child(userHomeID).child("groceryList").getChildren()) {
+                        Info info = secondSnapshot.getValue(Info.class);
+                        list.add(info);
 
-                        //Info info = dataSnapshot.getValue(Info.class);
-                        //list.add(info);
-                        for(DataSnapshot secondSnapshot : snapshot.child("Homes").child(dataSnapshot.getKey()).child("groceryList").getChildren()){
-                            Info info = secondSnapshot.getValue(Info.class);
-                            list.add(info);
-
-                        }
                     }
+
                     adapter.notifyDataSetChanged();
-                }
+            }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -250,5 +250,32 @@ public class GroceryActivity extends AppCompatActivity {
 
         //Shows the input dialog box
         dialog.show();
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // adding a click listener for option selected on below line.
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.idLogOut:
+                // displaying a toast message on user logged out inside on click.
+                Toast.makeText(getApplicationContext(), "User Logged Out", Toast.LENGTH_LONG).show();
+                // on below line we are signing out our user.
+                newAuth.signOut();
+                // on below line we are opening our login activity.
+                Intent i = new Intent(GroceryActivity.this, LoginActivity.class);
+                startActivity(i);
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // on below line we are inflating our menu
+        // file for displaying our menu options.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+
     }
 }

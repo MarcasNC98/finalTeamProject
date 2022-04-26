@@ -12,9 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FirebaseCrudApp">
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="false" />-->
         <activity
             android:name=".Login.ChooseHouseActivity"
             android:exported="false" />
@@ -42,7 +39,7 @@
 
         <activity
             android:name=".Polls.AddPollActivity"
-            android:label="Add Poll" /> <!-- login activity is set as launcher activity -->
+            android:label="Add Poll" />
         <activity
             android:name=".Login.LoginActivity"
             android:exported="true">
