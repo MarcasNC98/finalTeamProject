@@ -12,14 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FirebaseCrudApp">
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".Login.ChooseHouseActivity"
             android:exported="false" />
         <activity
             android:name=".GroceryList.GroceryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chores.MainChoresActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chores.AddChoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chores.UpdateChoreActivity"
             android:exported="false" />
         <activity
             android:name=".Login.RegistrationActivity"
@@ -30,6 +39,7 @@
         <activity
             android:name=".Polls.VotingActivity"
             android:label="Vote" />
+
         <activity
             android:name=".Polls.AddPollActivity"
             android:label="Add Poll" /> <!-- login activity is set as launcher activity -->

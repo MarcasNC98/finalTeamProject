@@ -173,11 +173,11 @@ public class ChooseHouseActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
+                ArrayList<String> homeIDs = new ArrayList<>();
                 for(DataSnapshot getHomesID: snapshot.child("Homes").getChildren()) {
-                    ArrayList<String> homeIDs = new ArrayList<>();
                     homeIDs.add(getHomesID.getKey());
-                    firebaseCallBack.onCallBack(homeIDs);
                 }
+                firebaseCallBack.onCallBack(homeIDs);
             }
 
             @Override
