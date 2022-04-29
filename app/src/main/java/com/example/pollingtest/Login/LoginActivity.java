@@ -49,10 +49,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Tried to add google login system, could not get it working
 //        googleLoginBtn = findViewById(R.id.googleLoginBtn);
 //
 //        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
 //        gsc = GoogleSignIn.getClient(this, gso);
+
         //Returns an instance of FirebaseAuth and ties it to newAuth
         newAuth = FirebaseAuth.getInstance();
         //Assigns the input field for an email address with the ID 'login_email' from 'activity_main.xml' to emailAddress
@@ -125,6 +127,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+        //Remnants of google sign in code that I couldn't get working.
 //        googleLoginBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

@@ -67,14 +67,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         //Returns an instance of FirebaseAuth and ties it to newAuth
         newAuth=FirebaseAuth.getInstance();
-        //Creates a FirebaseUser class called newUser and ties it to newAuth.getCurrentUser that will retrieve the current users credentials
-
 
         newDatabase=FirebaseDatabase.getInstance("https://polling-3351e-default-rtdb.europe-west1.firebasedatabase.app/");
         newReference=newDatabase.getReference();
 
-
-        //newDatabase= FirebaseDatabase.getInstance("https://grocerylist-c678c-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("NewUsers");
 
         //Creates and sets a new instance of ProgressDialog and assigns it to newDialog, this will display a progress messaging letting the user know the program is working on registering an account
         newDialog=new ProgressDialog(this);
