@@ -37,24 +37,20 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth newAuth;
     //ProgressDialog class called newDialog
     private ProgressDialog newDialog;
-
+    //Firebase database and reference classes for accessing database
     private FirebaseDatabase newDatabase;
     private DatabaseReference newReference;
-
-    private Context mContext;
-
+    //EditText class for entering username
     private EditText userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
-
         //Returns an instance of FirebaseAuth and ties it to newAuth
         newAuth=FirebaseAuth.getInstance();
-
+        //Assigns the input field for a username with the ID 'register_name' from 'activity_registration.xml' to userName
         userName=findViewById(R.id.register_name);
-
         //Assigns the input field for an email address with the ID 'register_email' from 'activity_registration.xml' to emailAddress
         emailAddress=findViewById(R.id.register_email);
         //Assigns the input field for creating a password with the ID 'register_password' from 'activity_registration.xml' to password
@@ -64,13 +60,12 @@ public class RegistrationActivity extends AppCompatActivity {
         //Assigns the button for creating an account with the ID 'registerBtn' from 'activity_registration.xml' to buttonRegister
         buttonRegister=findViewById(R.id.registerBtn);
 
-
         //Returns an instance of FirebaseAuth and ties it to newAuth
         newAuth=FirebaseAuth.getInstance();
 
+        //Reference to the firebase database
         newDatabase=FirebaseDatabase.getInstance("https://polling-3351e-default-rtdb.europe-west1.firebasedatabase.app/");
         newReference=newDatabase.getReference();
-
 
         //Creates and sets a new instance of ProgressDialog and assigns it to newDialog, this will display a progress messaging letting the user know the program is working on registering an account
         newDialog=new ProgressDialog(this);
@@ -79,8 +74,8 @@ public class RegistrationActivity extends AppCompatActivity {
         email_signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();//will end the current activity allowing the user to go back
-                //stop executing anything else
+                //Will end the current activity allowing the user to go back
+                finish();
             }
         });
 
@@ -93,13 +88,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 String newEmail=emailAddress.getText().toString().trim();
                 String newPassword=password.getText().toString().trim();
 
-
                 //If the newEmail field is empty, an error will be shown in the emailAddress field stating that the field cannot be blank
                 if (TextUtils.isEmpty(name)){
                     userName.setError("Cannot be blank");
                     return;
                 }
-
 
                 //If the newEmail field is empty, an error will be shown in the emailAddress field stating that the field cannot be blank
                 if (TextUtils.isEmpty(newEmail)){
@@ -123,21 +116,21 @@ public class RegistrationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //If the task is successful, a new activity is started that will get the HomePage class and redirect the user to the apps home page
                         if (task.isSuccessful()){
-                            newDialog.dismiss();//The newDialog loading message is dismissed
+                            //The newDialog loading message is dismissed
+                            newDialog.dismiss();
 
                             FirebaseUser newUser=newAuth.getCurrentUser();
                             String uId=newUser.getUid();//Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
-                            System.out.println(">>>> uid: "+uId);
                             newReference.child("NewUsers").child(uId).child("Name").setValue(name);
 
                             //A toast dialog message will pop up on the screen informing the user that their account has been created successfully
                             Toast.makeText(getApplicationContext(),"Account created",Toast.LENGTH_SHORT).show();
-
-                            Intent intent = new Intent(getApplicationContext(), ChooseHouseActivity.class);//TODO:Change application context to the login one
+                            //Sends over the userID being created to ChooseHouseActivity, means I don't have to create a new instance of uId in that activity
+                            Intent intent = new Intent(getApplicationContext(), ChooseHouseActivity.class);
                             intent.putExtra("uId", uId);
                             startActivity(intent);
-                            System.out.println(">>>> intent was called");
-                            finish();//will end the current activity allowing the user to go back
+                            //Will end the current activity allowing the user to go back
+                            finish();
 
                         }else {
                             //if the task is unsuccessful for any reason, a toast message will pop up on screen informing the user that their account creation failed

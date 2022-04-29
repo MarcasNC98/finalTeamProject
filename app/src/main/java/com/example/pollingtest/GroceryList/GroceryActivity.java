@@ -68,12 +68,8 @@ public class GroceryActivity extends AppCompatActivity {
     public GroceryActivity(){
         //Returns an instance of FirebaseAuth and ties it to newAuth
         newAuth=FirebaseAuth.getInstance();
-
         //Creates a FirebaseUser class called newUser and ties it to newAuth.getCurrentUser that will retrieve the current users credentials
         FirebaseUser newUser=newAuth.getCurrentUser();
-
-
-
         //Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
         String uId=newUser.getUid();
         userID=uId;
@@ -91,12 +87,9 @@ public class GroceryActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
-    //Tried to add a function where you can press on an item to remove it from the database, marking it as purchased. Couldn't get the 'retrieveID' so the function doesn't work.
+    //Tried to add a function where you can press on an item to remove it from the database, marking it as purchased. Couldn't get the 'retrieveID' so the function doesn't work properly.
     public void deleteGrocery(String newId){
         newReference.child("Homes").child(retrieveID).child("groceryList").child(newId).setValue(null);
     }
@@ -125,33 +118,38 @@ public class GroceryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Setting the view as the grocerylistapp xml layout
         setContentView(R.layout.grocerylistapp);
+        //Setting recyclerView as the layout in the main_list xml layoutfile
         recyclerView = findViewById(R.id.main_list);
-
+        //Creating a new instance of list ArrayList
         list = new ArrayList<>();
+        //Setting the recyclerview layout
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Setting adapter to be the ArrayList list
         adapter = new NewAdapter(this, list);
+        //Setting the recyclerView as adapter
         recyclerView.setAdapter(adapter);
-
+        //Button to navigate to chores
         choresBtn= findViewById(R.id.grocery_chores_btn);
-
         //Assigns the Floating Action Button with the id of 'fab' from 'grocerylistapp.xml to fab_btn
         fab_btn=findViewById(R.id.fab);
+        //Button to navigate to polls
         pollBtn=findViewById(R.id.grocery_polls_btn);
+
+            //Adding a valueEventListener for the databse reference
             newReference.addValueEventListener(new ValueEventListener() {
                 @Override
+                //Shows the grocery data stored in the database depending on if the data is stored in the house the user is a member of
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list.clear();
                     String userHomeID = snapshot.child("NewUsers").child(userID).child("home").getValue(String.class);
                     for (DataSnapshot secondSnapshot : snapshot.child("Homes").child(userHomeID).child("groceryList").getChildren()) {
                         Info info = secondSnapshot.getValue(Info.class);
                         list.add(info);
-
                     }
-
                     adapter.notifyDataSetChanged();
             }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -166,7 +164,7 @@ public class GroceryActivity extends AppCompatActivity {
                 dialogBox();
             }
         });
-        //Onclick listener that sends the user to the Poll functionality of the application
+        //OnClickListener that sends the user to the Poll functionality of the application
         pollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,6 +172,7 @@ public class GroceryActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //OnClickListener that sends the user to the Chores functionality of the application
         choresBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -183,23 +182,18 @@ public class GroceryActivity extends AppCompatActivity {
         });
     }
 
-
-
     //Dialog box for inputting grocery data
     private void dialogBox(){
-
         //Creates alert dialog on the homepage and assigns it to newDialog
         AlertDialog.Builder newDialog=new AlertDialog.Builder(GroceryActivity.this);
         //Creates a layout inflater from HomePage
         LayoutInflater inflater=LayoutInflater.from(GroceryActivity.this);
         //Inflates the 'input.xml' layout and assigns it to a view called newView
         View newView=inflater.inflate(R.layout.input,null);
-
         //Creates a new dialog box
         AlertDialog dialog=newDialog.create();
         //Sets this new dialog box to display newView aka the 'input.xml' layout
         dialog.setView(newView);
-
         //Assigns the field for a user to input the name of a grocery item with the ID input_text from 'input.xml' to the EditText text
         EditText text=newView.findViewById(R.id.input_text);
         //Assigns the field for a user to input the amount of a grocery item with the ID input_amount from 'input.xml' to the EditText amount
@@ -213,14 +207,10 @@ public class GroceryActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
                 //When clicked, a string called newText, newAmount and newPrice will be created. They will get the information from the EditText fields and when convert them to strings. When converted, trim will remove whitespice from before and after the data.
                 String newText=text.getText().toString().trim();
                 String newAmount=amount.getText().toString().trim();
                 String newPrice=price.getText().toString().trim();
-
 
                 //Creates an error message if there is nothing entered in the text, amount or price fields that lets the user know nothing can be blank.
                 if (TextUtils.isEmpty(newText)){
@@ -241,10 +231,8 @@ public class GroceryActivity extends AppCompatActivity {
                 //The price field is converted to a double and named conPrice
                 double conPrice=Double.parseDouble(newPrice);
 
-
                 //String called id that pushes a key to the Firebase database
                 String id=newReference.push().getKey();
-
 
                 //Sends the date that the data was pushed
                 String newDate= DateFormat.getDateInstance().format(new Date());
@@ -252,13 +240,8 @@ public class GroceryActivity extends AppCompatActivity {
                 //Ties the info entered in the input dialog box to the variables in info.java
                 Info info=new Info(newDate, newText,conAmount,conPrice,id);
 
-
                 //Returns an instance of FirebaseAuth and ties it to newAuth
                 newAuth=FirebaseAuth.getInstance();
-
-
-
-
 
                 //Sets the values in info to the id that is pushed to the database
                 newReference.child("Homes").child(retrieveID).child("groceryList").child(id).setValue(info)
@@ -276,24 +259,22 @@ public class GroceryActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
         //Shows the input dialog box
         dialog.show();
-
     }
 
     //Options menu used to log a user out of the application
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // adding a click listener for option selected on below line.
+        //Adding an click listener for option selected on below line
         int id = item.getItemId();
         switch (id) {
             case R.id.idLogOut:
-                // displaying a toast message on user logged out inside on click.
+                //Displaying a toast message on user logged out inside on click
                 Toast.makeText(getApplicationContext(), "User Logged Out", Toast.LENGTH_LONG).show();
-                // on below line we are signing out our user.
+                //Signing out the user.
                 newAuth.signOut();
-                // on below line we are opening our login activity.
+                //Opening the login activity, sending the user back to log in screen
                 Intent i = new Intent(GroceryActivity.this, LoginActivity.class);
                 startActivity(i);
                 this.finish();
@@ -304,14 +285,10 @@ public class GroceryActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // on below line we are inflating our menu
-        // file for displaying our menu options.
+        //Inflating the menu
+        //Displaying the menu options.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
 
     }
-
-
-
-
 }

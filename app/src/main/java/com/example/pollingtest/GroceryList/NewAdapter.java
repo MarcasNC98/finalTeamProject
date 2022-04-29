@@ -52,7 +52,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewViewHolder> {
     public static class NewViewHolder extends RecyclerView.ViewHolder{
         //Variables for storing information that is being displayed from the ArrayList of objects Info
         TextView date,text, amount, price;
-        //Cardview that is used to detect a press on an item in the grocery list.
+        //Cardview that is used to detect a press on an item in the grocery list, used to delete items.
         CardView newCardView;
         //An info object used for when an onClickEvent happens
         Info info;
@@ -84,8 +84,5 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewViewHolder> {
             //Assigning the info object to the class info variable
             this.info=info;
         }
-
-
-
     }
 }

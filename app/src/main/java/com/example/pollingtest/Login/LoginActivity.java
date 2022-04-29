@@ -35,21 +35,17 @@ public class LoginActivity extends AppCompatActivity {
     private TextView email_signUp;
     //Button class called buttonLogin
     private Button buttonLogin;
-
-
     //FirebaseAuth class called newAuth
     private FirebaseAuth newAuth;
     //ProgressDialog class called newDialog
     private ProgressDialog newDialog;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Tried to add google login system, could not get it working
+        //Tried to add google login system, could not get it working properly with the application
 //        googleLoginBtn = findViewById(R.id.googleLoginBtn);
 //
 //        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -65,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         email_signUp = findViewById(R.id.register);
         //Assigns the button for logging in with the ID 'loginBtn' from 'activity_main.xml' to buttonLogin
         buttonLogin = findViewById(R.id.loginBtn);
-
 
         //Creates and sets a new instance of ProgressDialog and assigns it to newDialog, this will display a progress messaging letting the user know the program is working on logging in
         newDialog = new ProgressDialog(this);
@@ -163,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
 //
 //    void navigateHomePage(){
 //        finish();
-//        startActivity(new Intent(getApplicationContext(),HomePage.class));
+//        startActivity(new Intent(getApplicationContext(),GroceryActivity.class));
 //    }
 
 

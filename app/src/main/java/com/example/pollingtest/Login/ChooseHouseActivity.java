@@ -43,50 +43,50 @@ public class ChooseHouseActivity extends AppCompatActivity {
     private DatabaseReference newReference;
     private String homeIDInput;
     private String houseID;
-//    private FirebaseAuth newAuth;
-//    private FirebaseUser newUser;
     private String uId;
     private LocalDate today;
 
     ArrayList<String> homes = new ArrayList<>();
 
+    //https://www.youtube.com/watch?v=OvDZVV5CbQg
+    //Wait for the async database then grab all homesID's
     public interface FirebaseCallBack{
         void onCallBack(ArrayList<String> homesIDs);
     }
 
-
+    
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_house);
-        System.out.println("<><><><>> 1 On Create()");
-
+        //Buttons to create or join a house
         createButton = findViewById(R.id.createHouse);
         joinButton = findViewById(R.id.joinHouse);
-
+        //Database reference
         newDatabase = FirebaseDatabase.getInstance("https://polling-3351e-default-rtdb.europe-west1.firebasedatabase.app/");
         newReference = newDatabase.getReference();
-
-//        newAuth = FirebaseAuth.getInstance();//Returns an instance of FirebaseAuth and ties it to newAuth
-//        newUser = newAuth.getCurrentUser();//Creates a FirebaseUser class called newUser and ties it to newAuth.getCurrentUser that will retrieve the current users credentials
-        uId = getIntent().getStringExtra("uId");//Gets the string passed through the intent.
-
+        //Gets the string passed through the intent from registration activity
+        uId = getIntent().getStringExtra("uId");
+        //Variable used to get todays date
         today = LocalDate.now();
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            //When clicked, the dialogBox view will be shown
+            //When clicked, a houseID will be created and pushed to the database
             public void onClick(View view) {
-                System.out.println("<><><><>> 2 CreateBtn.OnClick()");
                 houseID = newReference.push().getKey();
+                //Sets the check value to todays date, needs to be used in the chores activity
                 newReference.child("Homes").child(houseID).child("check").setValue(today.toString());
+                //Sets the join date to todays date
                 newReference.child("Homes").child(houseID).child("tenants").child(uId).child("joinDate").setValue(today.toString());
+                //Gives the user a home variable with the houseID, used to tie users to specific houses
                 newReference.child("NewUsers").child(uId).child("home").setValue(houseID);
-
+                //Moves the user to the grocery activity
                 startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
-                finish();//will end the current activity allowing the user to go back
+                //will end the current activity allowing the user to go back
+                finish();
             }
         });
 
@@ -95,38 +95,32 @@ public class ChooseHouseActivity extends AppCompatActivity {
             @Override
             //When clicked, the dialogBox view will be shown
             public void onClick(View view) {
-                System.out.println("<><><><>> 3 joinBtn.OnClick()");
                 dialogBox();
             }
         });
     }
 
     private void dialogBox(){
-        System.out.println("<><><><>> 4 dialogBox()");
         //Creates alert dialog on the homepage and assigns it to newDialog
         AlertDialog.Builder newDialog=new AlertDialog.Builder(ChooseHouseActivity.this);
         //Creates a layout inflater from HomePage
         LayoutInflater inflater=LayoutInflater.from(ChooseHouseActivity.this);
         //Inflates the 'input.xml' layout and assigns it to a view called newView
         View newView=inflater.inflate(R.layout.house_input,null);
-
         //Creates a new dialog box
         AlertDialog dialog=newDialog.create();
         //Sets this new dialog box to display newView aka the 'input.xml' layout
         dialog.setView(newView);
-
         //Assigns the field for a user to input the name of a grocery item with the ID input_text from 'input.xml' to the EditText text
         EditText code=newView.findViewById(R.id.input_code);
-
         //Assigns the button that a user clicks to submit the data they've entered with the ID submit_btn from 'input.xml' to the Button submitBtn
         Button joinHBtn=newView.findViewById(R.id.joinHouse_btn);
-
         //Shows the input dialog box
         dialog.show();
-        System.out.println("<><><><>> 4 dialogBox().dialogShow()");
 
         //https://www.youtube.com/watch?v=OvDZVV5CbQg
-        getData(new FirebaseCallBack() {//Wait for the async database then grab all the homes and store them in an array list called "homes".
+        //Wait for the async database then grab all the homes and store them in an array list called "homes".
+        getData(new FirebaseCallBack() {
             @Override
             public void onCallBack(ArrayList<String> homesIDs) {
                 homes = homesIDs;
@@ -137,43 +131,42 @@ public class ChooseHouseActivity extends AppCompatActivity {
         joinHBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("<><><><>> 4 > 5 JoinHBtn.OnClick()");
-                //When clicked, a string called newText, newAmount and newPrice will be created. They will get the information from the EditText fields and when convert them to strings. When converted, trim will remove whitespice from before and after the data.
                 String newCode=code.getText().toString().trim();
                 homeIDInput = newCode;
-                System.out.println(">>>> homeIdInput: "+homeIDInput);
 
-
-                //Creates an error message if there is nothing entered in the text, amount or price fields that lets the user know nothing can be blank.
+                //Creates an error message if there is nothing entered in the text, amount or price fields that lets the user know nothing can be blank
                 if (TextUtils.isEmpty(newCode)){
                     code.setError("Cannot be blank");
                     return;
                 }
 
-
-                for(String home:homes){//loop through all the homes
-                    if (homeIDInput.equals(home)){//if the home input matches with one of the home String in the array
+                //Loop through all the homes
+                for(String home:homes){
+                    //If the home input matches with one of the home Strings in the array
+                    if (homeIDInput.equals(home)){
                         newReference.child("NewUsers").child(uId).child("home").setValue(home);
                         newReference.child("Homes").child(home).child("tenants").child(uId).child("joinDate").setValue(today.toString());
-                        finish();//end the current activity.
+                        //Ends the current activity.
+                        finish();
                         startActivity(new Intent(getApplicationContext(), GroceryActivity.class));
                     } else {
                         Toast.makeText(getApplicationContext(), "House doesn't exist", Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 //The input dialog box is dismissed
                 dialog.dismiss();
             }
         });
     }
 
+    //Method to get the homeID data
     private void getData(final FirebaseCallBack firebaseCallBack){
         newReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
+                //homeId's ArrayList
                 ArrayList<String> homeIDs = new ArrayList<>();
+                //Goes through the database and adds the key of the children of 'homes' to the homeID's ArrayList
                 for(DataSnapshot getHomesID: snapshot.child("Homes").getChildren()) {
                     homeIDs.add(getHomesID.getKey());
                 }
