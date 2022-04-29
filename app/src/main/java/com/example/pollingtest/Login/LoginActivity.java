@@ -69,10 +69,10 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //When clicked, a string called newEmail and newPassword will be created that will get the text in the emailAddress and password fields, convert them to strings and will use trim to remove any spaces at the beginning or end of the inputted data
+                //When clicked, a string called newEmail and newPassword will be created that will get the text in the emailAddress and password fields,
+                //convert them to strings and will use trim to remove any spaces at the beginning or end of the inputted data
                 String newEmail = emailAddress.getText().toString().trim();
                 String newPassword = password.getText().toString().trim();
-
                 //If the newEmail field is empty, an error will be shown in the emailAddress field stating that the field cannot be blank
                 if (TextUtils.isEmpty(newEmail)) {
                     emailAddress.setError("Cannot be blank");
@@ -83,11 +83,9 @@ public class LoginActivity extends AppCompatActivity {
                     password.setError("Cannot be blank");
                     return;
                 }
-
                 //A dialog message that will appear on screen when a user clicks the 'login' button that informs the user that the page is loading
                 newDialog.setMessage("Loading...");
                 newDialog.show();
-
                 //Firebase Authenticator newAuth that will sign in the user using the newEmail and newPassword fields and will listen for this being completed
                 newAuth.signInWithEmailAndPassword(newEmail, newPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -98,13 +96,11 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                             //A toast dialog message will pop up on the screen informing the user that they have been logged in successfully
                             Toast.makeText(getApplicationContext(), "Logged In", Toast.LENGTH_SHORT).show();
-
                             //The newDialog loading message is dismissed
                             newDialog.dismiss();
                         } else {
                             //if the task is unsuccessful for any reason, a toast message will pop up on screen informing the user that their login attempt failed
                             Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
-
                             //Again, the newDialog loading message is dismissed
                             newDialog.dismiss();
                         }

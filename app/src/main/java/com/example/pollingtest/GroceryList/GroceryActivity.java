@@ -202,16 +202,15 @@ public class GroceryActivity extends AppCompatActivity {
         EditText price=newView.findViewById(R.id.input_price);
         //Assigns the button that a user clicks to submit the data they've entered with the ID submit_btn from 'input.xml' to the Button submitBtn
         Button submitBtn=newView.findViewById(R.id.submit_btn);
-
         //Creates an onClickLister to listen for when the submitBtn is clicked
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //When clicked, a string called newText, newAmount and newPrice will be created. They will get the information from the EditText fields and when convert them to strings. When converted, trim will remove whitespice from before and after the data.
+                //When clicked, a string called newText, newAmount and newPrice will be created. They will get the information from the EditText fields and when convert them to strings.
+                // When converted, trim will remove whitespice from before and after the data.
                 String newText=text.getText().toString().trim();
                 String newAmount=amount.getText().toString().trim();
                 String newPrice=price.getText().toString().trim();
-
                 //Creates an error message if there is nothing entered in the text, amount or price fields that lets the user know nothing can be blank.
                 if (TextUtils.isEmpty(newText)){
                     text.setError("Cannot be blank");
@@ -225,24 +224,18 @@ public class GroceryActivity extends AppCompatActivity {
                     price.setError("Cannot be blank");
                     return;
                 }
-
                 //Because the EditText fields have been converted to strings, they now need to be converted into their respective data types. The amount field is converted into an Integer and named conAmount
                 int conAmount=Integer.parseInt(newAmount);
                 //The price field is converted to a double and named conPrice
                 double conPrice=Double.parseDouble(newPrice);
-
                 //String called id that pushes a key to the Firebase database
                 String id=newReference.push().getKey();
-
                 //Sends the date that the data was pushed
                 String newDate= DateFormat.getDateInstance().format(new Date());
-
                 //Ties the info entered in the input dialog box to the variables in info.java
                 Info info=new Info(newDate, newText,conAmount,conPrice,id);
-
                 //Returns an instance of FirebaseAuth and ties it to newAuth
                 newAuth=FirebaseAuth.getInstance();
-
                 //Sets the values in info to the id that is pushed to the database
                 newReference.child("Homes").child(retrieveID).child("groceryList").child(id).setValue(info)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -254,7 +247,6 @@ public class GroceryActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
                 //The input dialog box is dismissed
                 dialog.dismiss();
             }

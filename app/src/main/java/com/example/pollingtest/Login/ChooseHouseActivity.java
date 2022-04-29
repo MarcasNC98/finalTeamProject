@@ -37,15 +37,20 @@ import java.util.List;
 
 public class ChooseHouseActivity extends AppCompatActivity {
 
+    //Buttons to create and join houses
     private Button createButton;
     private Button joinButton;
+    //Firebase database references
     private FirebaseDatabase newDatabase;
     private DatabaseReference newReference;
+    //Input for a homeID
     private String homeIDInput;
+    //Class for getting the houseID's key
     private String houseID;
+    //Class for user ID
     private String uId;
+    //Class for setting todays date
     private LocalDate today;
-
     ArrayList<String> homes = new ArrayList<>();
 
     //https://www.youtube.com/watch?v=OvDZVV5CbQg
@@ -53,8 +58,6 @@ public class ChooseHouseActivity extends AppCompatActivity {
     public interface FirebaseCallBack{
         void onCallBack(ArrayList<String> homesIDs);
     }
-
-    
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +102,6 @@ public class ChooseHouseActivity extends AppCompatActivity {
             }
         });
     }
-
     private void dialogBox(){
         //Creates alert dialog on the homepage and assigns it to newDialog
         AlertDialog.Builder newDialog=new AlertDialog.Builder(ChooseHouseActivity.this);
@@ -117,7 +119,6 @@ public class ChooseHouseActivity extends AppCompatActivity {
         Button joinHBtn=newView.findViewById(R.id.joinHouse_btn);
         //Shows the input dialog box
         dialog.show();
-
         //https://www.youtube.com/watch?v=OvDZVV5CbQg
         //Wait for the async database then grab all the homes and store them in an array list called "homes".
         getData(new FirebaseCallBack() {
@@ -126,20 +127,17 @@ public class ChooseHouseActivity extends AppCompatActivity {
                 homes = homesIDs;
             }
         });
-
         //Creates an onClickLister to listen for when the submitBtn is clicked
         joinHBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String newCode=code.getText().toString().trim();
                 homeIDInput = newCode;
-
                 //Creates an error message if there is nothing entered in the text, amount or price fields that lets the user know nothing can be blank
                 if (TextUtils.isEmpty(newCode)){
                     code.setError("Cannot be blank");
                     return;
                 }
-
                 //Loop through all the homes
                 for(String home:homes){
                     //If the home input matches with one of the home Strings in the array

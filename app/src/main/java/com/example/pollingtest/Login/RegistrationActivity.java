@@ -83,33 +83,29 @@ public class RegistrationActivity extends AppCompatActivity {
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //When clicked, a string called newEmail and newPassword will be created that will get the text in the emailAddress and password fields, convert them to strings and will use trim to remove any spaces at the beginning or end of the inputted data
+                //When clicked, a string called newEmail and newPassword will be created that will get the text in the emailAddress and password fields,
+                //convert them to strings and will use trim to remove any spaces at the beginning or end of the inputted data
                 String name=userName.getText().toString().trim();
                 String newEmail=emailAddress.getText().toString().trim();
                 String newPassword=password.getText().toString().trim();
-
                 //If the newEmail field is empty, an error will be shown in the emailAddress field stating that the field cannot be blank
                 if (TextUtils.isEmpty(name)){
                     userName.setError("Cannot be blank");
                     return;
                 }
-
                 //If the newEmail field is empty, an error will be shown in the emailAddress field stating that the field cannot be blank
                 if (TextUtils.isEmpty(newEmail)){
                     emailAddress.setError("Cannot be blank");
                     return;
                 }
-
                 //The same as above, an error will be shown if the password field is blank
                 if (TextUtils.isEmpty(newPassword)){
                     password.setError("Cannot be blank");
                     return;
                 }
-
                 //A dialog message that will appear on screen when a user clicks the 'create account' button that informs the user that the page is loading
                 newDialog.setMessage("Loading...");
                 newDialog.show();
-
                 //Firebase Authenticator newAuth that will create a user with an email and password using the newEmail and newPassword fields and will listen for this being completed
                 newAuth.createUserWithEmailAndPassword(newEmail,newPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -118,11 +114,10 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             //The newDialog loading message is dismissed
                             newDialog.dismiss();
-
+                            //Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID
                             FirebaseUser newUser=newAuth.getCurrentUser();
-                            String uId=newUser.getUid();//Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
+                            String uId=newUser.getUid();
                             newReference.child("NewUsers").child(uId).child("Name").setValue(name);
-
                             //A toast dialog message will pop up on the screen informing the user that their account has been created successfully
                             Toast.makeText(getApplicationContext(),"Account created",Toast.LENGTH_SHORT).show();
                             //Sends over the userID being created to ChooseHouseActivity, means I don't have to create a new instance of uId in that activity
@@ -131,7 +126,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             startActivity(intent);
                             //Will end the current activity allowing the user to go back
                             finish();
-
                         }else {
                             //if the task is unsuccessful for any reason, a toast message will pop up on screen informing the user that their account creation failed
                             Toast.makeText(getApplicationContext(),"Sign Up Failed",Toast.LENGTH_SHORT).show();
