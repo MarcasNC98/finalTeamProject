@@ -62,11 +62,11 @@ public class AddPollActivity extends AppCompatActivity {
         //Creates a string called uId and ties it to newUser.getUid that will retrieve the users generated ID.
         String uId = newUser.getUid();
         userID = uId;
-        System.out.println(uId);
-        System.out.println(userID);
         firebaseDatabase = FirebaseDatabase.getInstance("https://polling-3351e-default-rtdb.europe-west1.firebasedatabase.app/");
         // on below line creating our database reference.
         databaseReference = firebaseDatabase.getReference();
+        //calling the getData method bellow
+
         getData(new FireCallBack() {
 
             @Override
@@ -99,13 +99,16 @@ public class AddPollActivity extends AppCompatActivity {
         // on below line we are passing all data to our modal class.
         PollRVModal pollRVModal = new PollRVModal(pollID, pollName, pollDesc, pollImg, option1, option2, option3, votes1, votes2, votes3);
         // on below line we are calling a add value event
-        // to pass data to firebase database.
+
+        // to pass data to firebase database. and set the data under pollID as the poll arraylist that contains all the data
         databaseReference.child("Homes").child(mHomeID).child("polls").child(pollID).setValue(pollRVModal);
+
         Toast.makeText(AddPollActivity.this, "poll Added..", Toast.LENGTH_SHORT).show();
         // starting a main activity.
         startActivity(new Intent(AddPollActivity.this, PollActivity.class));
 
     }
+    // method to get the HomeID of the current user
     private void getData(final FireCallBack fireCallBack) {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

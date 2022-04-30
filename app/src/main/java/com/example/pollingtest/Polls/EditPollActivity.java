@@ -68,11 +68,11 @@ public class EditPollActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance("https://polling-3351e-default-rtdb.europe-west1.firebasedatabase.app/");
         // on below line creating our database reference.
         databaseReference = firebaseDatabase.getReference();
-
+        // setting pollRVModal as the poll list
         pollRVModal = getIntent().getParcelableExtra("poll");
         // on below line we are initialing our database reference and we are adding a child as our Poll id.
 
-
+        //if the modal is not empty set all the text fields as the data that was entered previously and is stored in the array list all ready
         if (pollRVModal != null) {
             // on below line we are setting data to our edit text from our modal class.
             PollNameEdt.setText(pollRVModal.getPollName());
@@ -112,7 +112,7 @@ public class EditPollActivity extends AppCompatActivity {
             }
         });
     }
-
+// this method will delete a poll with the poll ID
     private void deletePoll(String pollID) {
 
 
@@ -132,7 +132,7 @@ public class EditPollActivity extends AppCompatActivity {
         });
 
     }
-
+//this method reads in all the new data and saves it in a hashmap with the corresponding location, then it is pushed to update the current pollID with this data
     private void updatePoll(String pollName, String pollDesc, String pollImg, String option1, String option2, String option3, String pollID) {
 
         loadingPB.setVisibility(View.VISIBLE);
@@ -159,29 +159,6 @@ public class EditPollActivity extends AppCompatActivity {
                     Toast.makeText(EditPollActivity.this, "Poll failed to Updated..", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            ;
-            // on below line we are calling a database reference on
-            // add value event listener and on data change method
-            // databaseReference.addValueEventListener(new ValueEventListener() {
-            //  @Override
-            //   public void onDataChange(@NonNull DataSnapshot snapshot) {
-            // making progress bar visibility as gone.
-            //       loadingPB.setVisibility(View.GONE);
-            // adding a map to our database.
-            //      databaseReference.child("Homes").child(retrieveID).child("polls").child(pollID).updateChildren(map);
-            // on below line we are displaying a toast message.
-            //     Toast.makeText(EditPollActivity.this, "Poll Updated..", Toast.LENGTH_SHORT).show();
-            // opening a new activity after updating our coarse.
-            //     startActivity(new Intent(EditPollActivity.this, PollActivity.class));
-            //   }
-
-            //  @Override
-            //   public void onCancelled(@NonNull DatabaseError error) {
-            // displaying a failure message on toast.
-            //        Toast.makeText(EditPollActivity.this, "Fail to update Poll..", Toast.LENGTH_SHORT).show();
-            //      }
-            //  });
         });
     }
 
@@ -197,14 +174,11 @@ public class EditPollActivity extends AppCompatActivity {
                 // our value to our text view in below line.
                 retrieveID = homeID;
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-
     }
 }
 

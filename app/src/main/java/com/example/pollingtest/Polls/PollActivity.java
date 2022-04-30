@@ -91,21 +91,19 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
         });
         // on below line initializing our adapter class.
         pollRVAdapter = new PollRVAdapter(pollRVModalArrayList, this, this::onPollClick);
-        // setting layout malinger to recycler view on below line.
+        // setting layout manager to recycler view on below line.
         pollRV.setLayoutManager(new LinearLayoutManager(this));
         // setting adapter to recycler view on below line.
         pollRV.setAdapter(pollRVAdapter);
         getData();
-        // on below line calling a method to fetch Polls from database.
-      //  getPolls();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 pollRVModalArrayList.clear();
                 String userHomeID = snapshot.child("NewUsers").child(userID).child("home").getValue(String.class);
-
+                    //for every poll in the current users house get the value and add it to the pollRVMOdal
                     for(DataSnapshot secondSnapshot : snapshot.child("Homes").child(userHomeID).child("polls").getChildren()){
-                        System.out.println("TEST111111111111111"+secondSnapshot.getValue());
+
                         PollRVModal PollRVModal = secondSnapshot.getValue(PollRVModal.class);
                         pollRVModalArrayList.add(PollRVModal);
                         loadingPB.setVisibility(View.GONE);
@@ -166,7 +164,7 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
         // calling a method to display a bottom sheet on below line.
         displayBottomSheet(pollRVModalArrayList.get(position));
     }
-
+    //this is a log out button
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // adding a click listener for option selected on below line.
@@ -195,7 +193,7 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
         return true;
 
     }
-
+// this is a pop up bottom display that will show the tenants a preview of the poll description
     private void displayBottomSheet(PollRVModal modal) {
         // on below line we are creating our bottom sheet dialog.
         final BottomSheetDialog bottomSheetTeachersDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
@@ -209,8 +207,8 @@ public class PollActivity extends AppCompatActivity implements PollRVAdapter.Pol
         // calling a method to display our bottom sheet.
         bottomSheetTeachersDialog.show();
         // on below line we are creating variables for
-        // our text view and image view inside bottom sheet
-        // and initialing them with their ids.
+        // our text view and image view
+        // and initialing them
         TextView pollNameTV = layout.findViewById(R.id.idTVPollName);
         TextView pollDescTV = layout.findViewById(R.id.idTVPollDesc);
 

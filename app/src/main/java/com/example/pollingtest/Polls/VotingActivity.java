@@ -78,9 +78,6 @@ public class VotingActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference();
         // on below line we are getting our modal class on which we have passed.
         pollRVModal = getIntent().getParcelableExtra("poll");
-        System.out.println(pollRVModal + "this is pollRBModal");
-        // on below line we are initialing our database reference and we are adding a child as our Poll id.
-
 
         if (pollRVModal != null) {
             // on below line we are setting data to our edit text from our modal class.
@@ -138,7 +135,7 @@ public class VotingActivity extends AppCompatActivity {
         loadingPB.setVisibility(View.VISIBLE);
         databaseReference.child("votes1").setValue(votes1);
         loadingPB.setVisibility(View.GONE);
-        // adding a map to our database.
+
         // on below line we are displaying a toast message.
         Toast.makeText(VotingActivity.this, "Votes Added..", Toast.LENGTH_SHORT).show();
         votes1 = Integer.parseInt(VoteCount.get(VoteCount.size() - 3)) + 1;
@@ -239,6 +236,7 @@ public class VotingActivity extends AppCompatActivity {
         AlertDialog dialog = newDialog.create();
         //Sets this new dialog box to display newView aka the 'input.xml' layout
         dialog.setView(newView);
+        //initialising all our textviews
         Button bckBtn = newView.findViewById(R.id.bckBtn);
         TextView option1 = newView.findViewById(R.id.option1);
         TextView option2 =newView.findViewById(R.id.option2);
@@ -246,7 +244,7 @@ public class VotingActivity extends AppCompatActivity {
         TextView Count1 =newView.findViewById(R.id.voteCount1);
         TextView Count2 = newView.findViewById(R.id.voteCount2);
         TextView Count3 = newView.findViewById(R.id.voteCount3);
-
+        //setting the text views with data
         Count1.setText(Integer.toString(votes1));
         Count2.setText(Integer.toString(votes2));
         Count3.setText(Integer.toString(votes3));
@@ -262,8 +260,6 @@ public class VotingActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
         //Shows the input dialog box
         dialog.show();
         //Creates an onClickLister to listen for when the submitBtn is clicked
